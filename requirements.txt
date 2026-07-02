@@ -1,4 +1,4 @@
-accelerate>=0.33
+accelerate>=1.0
 datasets>=2.19
 evaluate>=0.4
 huggingface_hub>=0.24
@@ -14,4 +14,3 @@ torch>=2.2
 torchaudio>=2.2
 tqdm>=4.66
 transformers>=4.43
-

@@ -1,74 +1,90 @@
 # SpeechMaster Experiment Results
 
-All results below were produced on July 3, 2026 with
-`/home/zihang/miniconda3/envs/torch_gpu` on GPU `cuda:1`.
+Results were produced on July 3, 2026 in
+`/home/zihang/miniconda3/envs/torch_gpu` using NVIDIA GPUs.
 
-## ASR Evaluation
+## Main Dev-Clean Suite
 
-LibriSpeech clean validation slice, 128 utterances.
+LibriSpeech `validation`/clean, 1024 utterances.
 
-| System | Representation | WER (%) | CER (%) | RTF |
+| System | Rep. | WER (%) | CER (%) | RTF |
 |---|---:|---:|---:|---:|
-| facebook/wav2vec2-base-960h | final | 2.474 | 0.945 | 0.003 |
-| facebook/wav2vec2-base-960h | last4 mean | 2.858 | 1.026 | 0.003 |
-| facebook/hubert-large-ls960-ft | final | 1.578 | 0.493 | 0.005 |
+| Wav2Vec2 base 960h | final | 2.943 | 0.990 | 0.00146 |
+| Wav2Vec2 base 960h | last4 | 3.327 | 1.111 | 0.00151 |
+| Wav2Vec2 base 960h | midlast | 3.705 | 1.140 | 0.00149 |
+| HuBERT large 960h | final | 1.823 | 0.575 | 0.00256 |
+| Wav2Vec2 large LV60 | final | 1.636 | 0.532 | 0.00257 |
 
-Interpretation:
+SpeechMaster routes low-confidence Wav2Vec2 outputs to HuBERT:
 
-- HuBERT large fine-tuned ASR gives the best recognition quality on this slice.
-- Wav2Vec2 final-layer decoding is stronger than last-four-layer averaging,
-  which suggests the CTC projection is most calibrated to the final hidden
-  state.
-- RTF is far below 1 on the RTX 4090, so all evaluated systems run faster than
-  real time on the bounded validation slice.
+| Routed | WER (%) | CER (%) | RTF |
+|---:|---:|---:|---:|
+| 0% | 2.943 | 0.990 | 0.00128 |
+| 10% | 2.668 | 0.875 | 0.00141 |
+| 25% | 2.398 | 0.767 | 0.00161 |
+| 50% | 2.044 | 0.654 | 0.00194 |
+| 75% | 1.921 | 0.610 | 0.00229 |
+| 100% | 1.823 | 0.575 | 0.00262 |
+| Oracle | 1.450 | 0.520 | - |
 
-## SpeechMaster Routing
+## Test-Clean Verification
 
-SpeechMaster always runs the fast Wav2Vec2 branch and routes the lowest
-confidence utterances to HuBERT according to a CTC uncertainty score.
+LibriSpeech `test`/clean, 1024 utterances.
 
-| Routed utterances | Routed count | WER (%) | CER (%) | Cascade RTF |
-|---:|---:|---:|---:|---:|
-| 0% | 0 | 2.474 | 0.945 | 0.002 |
-| 25% | 32 | 1.877 | 0.633 | 0.003 |
-| 50% | 64 | 1.792 | 0.603 | 0.003 |
-| 75% | 96 | 1.706 | 0.553 | 0.003 |
-| 100% | 128 | 1.578 | 0.493 | 0.004 |
-| Oracle | - | 1.195 | 0.382 | - |
+| System | WER (%) | CER (%) | RTF |
+|---|---:|---:|---:|
+| Wav2Vec2 base 960h | 3.614 | 1.186 | 0.00142 |
+| HuBERT large 960h | 2.231 | 0.667 | 0.00249 |
+| Wav2Vec2 large LV60 | 1.849 | 0.598 | 0.00248 |
 
-Interpretation:
+| Routed | WER (%) | CER (%) | RTF |
+|---:|---:|---:|---:|
+| 0% | 3.614 | 1.186 | 0.00117 |
+| 10% | 3.398 | 1.093 | 0.00128 |
+| 25% | 3.035 | 0.946 | 0.00146 |
+| 50% | 2.602 | 0.797 | 0.00178 |
+| 75% | 2.292 | 0.698 | 0.00211 |
+| 100% | 2.231 | 0.667 | 0.00240 |
+| Oracle | 1.920 | 0.658 | - |
 
-- Routing only 25% of utterances recovers most of the Wav2Vec2-to-HuBERT gap.
-- WER improves monotonically as more uncertain samples are routed.
-- The oracle route beats both individual branches, which supports the central
-  SpeechMaster claim that SSL model errors are complementary.
+## Router Ablation
+
+At 25% dev-clean routing, random routing gives 2.655% WER, duration gives
+2.536%, entropy gives 2.314%, SpeechMaster peak-entropy gives 2.398%, and the
+oracle gives 1.450%. At 50% test-clean routing, random gives 2.928%, duration
+2.617%, peak-only 2.593%, peak-entropy 2.602%, and oracle 1.920%.
+
+The key conclusion is that risk-aware routing consistently beats random routing,
+while the oracle gap shows useful headroom for a learned router.
 
 ## Discrete Unit Analysis
 
-HuBERT base, final hidden layer, LibriSpeech clean validation slice, 64
-utterances.
+HuBERT base units, LibriSpeech dev-clean, 512 utterances. Raw token rate is
+about 49.9 tokens/s across layers. Deduplication roughly halves the rate.
 
-| K | Token/s | Dedup token/s | Bit/s | Dedup bit/s |
-|---:|---:|---:|---:|---:|
-| 50 | 49.86 | 25.42 | 281.41 | 143.45 |
-| 100 | 49.86 | 28.15 | 331.28 | 187.05 |
-| 200 | 49.86 | 29.51 | 381.14 | 225.58 |
-| 500 | 49.86 | 33.31 | 447.05 | 298.68 |
+| Layer | K | Dedup token/s | Dedup bit/s |
+|---:|---:|---:|---:|
+| -8 | 100 | 28.08 | 186.58 |
+| -8 | 1000 | 35.17 | 350.46 |
+| -4 | 100 | 27.14 | 180.34 |
+| -4 | 1000 | 29.74 | 296.36 |
+| -1 | 100 | 26.67 | 177.19 |
+| -1 | 1000 | 34.50 | 343.85 |
 
-Interpretation:
-
-- Raw HuBERT frame tokens appear at about 50 Hz.
-- Deduplication roughly halves the token rate, producing a compact unit stream.
-- Larger codebooks reduce k-means distortion but increase bitrate, exposing the
-  expected compression/quality tradeoff.
+Full CSV/LaTeX tables and plots are in `results/tables/heavy/` and
+`results/tables/test_clean/`.
 
 ## Reproduction
 
 ```bash
 cd /home/zihang/speech
 PATH=/home/zihang/miniconda3/envs/torch_gpu/bin:$PATH \
-  SSL_ASR_DEVICE=cuda:1 SSL_ASR_LIMIT=128 SSL_UNIT_LIMIT=64 \
-  bash scripts/run_main_experiments.sh
+  SSL_HEAVY_LIMIT=1024 SSL_HEAVY_UNIT_LIMIT=512 \
+  bash scripts/run_heavy_experiments.sh
+
+PATH=/home/zihang/miniconda3/envs/torch_gpu/bin:$PATH \
+  SSL_TEST_LIMIT=1024 \
+  bash scripts/run_test_clean_experiments.sh
 
 bash scripts/build_paper.sh
 ```

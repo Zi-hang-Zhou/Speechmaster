@@ -1,0 +1,18 @@
+{
+  "audio_seconds": 6915.439999999998,
+  "blend": null,
+  "cer": 0.005316200839281068,
+  "decode_seconds": 17.766864373348653,
+  "deletions": 25,
+  "device": "cuda:1",
+  "hits": 20042,
+  "insertions": 24,
+  "layer": null,
+  "limit": 1024,
+  "model": "facebook/wav2vec2-large-960h-lv60-self",
+  "rtf": 0.002569158921680856,
+  "split": "validation",
+  "subset": "clean",
+  "substitutions": 284,
+  "wer": 0.0163628322932534
+}

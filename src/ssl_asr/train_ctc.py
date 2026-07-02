@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from typing import Any
 
 import torch
-from datasets import Audio, load_dataset
 from transformers import (
     AutoModelForCTC,
     AutoProcessor,
@@ -14,6 +13,8 @@ from transformers import (
     set_seed,
 )
 
+from .data import load_librispeech_split
+from .io import write_json
 from .metrics import compute_asr_metrics
 from .text import normalize_librispeech_text
 
@@ -32,15 +33,24 @@ class DataCollatorCTCWithPadding:
         return batch
 
 
-def prepare_dataset(batch: dict, processor) -> dict:
-    audio = batch["audio"]
-    batch["input_values"] = processor(
-        audio["array"],
-        sampling_rate=audio["sampling_rate"],
+def prepare_sample(sample: dict, processor) -> dict:
+    inputs = processor(
+        sample["array"],
+        sampling_rate=sample["sampling_rate"],
     ).input_values[0]
-    with processor.as_target_processor():
-        batch["labels"] = processor(normalize_librispeech_text(batch["text"])).input_ids
-    return batch
+    labels = processor.tokenizer(normalize_librispeech_text(sample["text"])).input_ids
+    return {"input_values": inputs, "labels": labels}
+
+
+def load_prepared_split(split: str, subset: str, limit: int, cache_dir: str, processor) -> list[dict]:
+    samples = load_librispeech_split(
+        split=split,
+        subset=subset,
+        limit=limit,
+        streaming=True,
+        cache_dir=cache_dir,
+    )
+    return [prepare_sample(sample, processor) for sample in samples]
 
 
 def main() -> None:
@@ -48,18 +58,8 @@ def main() -> None:
     set_seed(args.seed)
 
     processor = AutoProcessor.from_pretrained(args.processor or args.model)
-    ds = load_dataset(
-        "openslr/librispeech_asr",
-        args.subset,
-        cache_dir=args.cache_dir,
-        trust_remote_code=True,
-    )
-    train = ds[args.train_split].select(range(min(args.train_limit, len(ds[args.train_split]))))
-    eval_ds = ds[args.eval_split].select(range(min(args.eval_limit, len(ds[args.eval_split]))))
-    train = train.cast_column("audio", Audio(sampling_rate=16000))
-    eval_ds = eval_ds.cast_column("audio", Audio(sampling_rate=16000))
-    train = train.map(lambda b: prepare_dataset(b, processor), remove_columns=train.column_names)
-    eval_ds = eval_ds.map(lambda b: prepare_dataset(b, processor), remove_columns=eval_ds.column_names)
+    train = load_prepared_split(args.train_split, args.subset, args.train_limit, args.cache_dir, processor)
+    eval_ds = load_prepared_split(args.eval_split, args.subset, args.eval_limit, args.cache_dir, processor)
 
     model = AutoModelForCTC.from_pretrained(
         args.model,
@@ -100,7 +100,7 @@ def main() -> None:
         fp16=args.fp16 and torch.cuda.is_available(),
         gradient_checkpointing=args.gradient_checkpointing,
         dataloader_num_workers=args.num_workers,
-        report_to=["tensorboard"],
+        report_to=[],
         load_best_model_at_end=True,
         metric_for_best_model="wer",
         greater_is_better=False,
@@ -117,10 +117,27 @@ def main() -> None:
         data_collator=DataCollatorCTCWithPadding(processor),
         compute_metrics=compute_metrics,
     )
-    trainer.train()
+    train_result = trainer.train()
     trainer.save_model(args.output_dir)
     processor.save_pretrained(args.output_dir)
-    print(trainer.evaluate())
+    eval_metrics = trainer.evaluate()
+    result = {
+        "model": args.model,
+        "processor": args.processor,
+        "subset": args.subset,
+        "train_split": args.train_split,
+        "eval_split": args.eval_split,
+        "train_limit": args.train_limit,
+        "eval_limit": args.eval_limit,
+        "max_steps": args.max_steps,
+        "freeze_feature_encoder": args.freeze_feature_encoder,
+        "freeze_encoder": args.freeze_encoder,
+        "train_metrics": train_result.metrics,
+        "eval_metrics": eval_metrics,
+    }
+    if args.metrics_output:
+        write_json(args.metrics_output, result)
+    print(result)
 
 
 def build_argparser() -> argparse.ArgumentParser:
@@ -134,6 +151,7 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--eval-limit", type=int, default=256)
     p.add_argument("--cache-dir", default="data/hf_cache")
     p.add_argument("--output-dir", default="results/checkpoints/wav2vec2_low_resource")
+    p.add_argument("--metrics-output", default=None)
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--eval-batch-size", type=int, default=4)
     p.add_argument("--grad-accum", type=int, default=8)
@@ -154,4 +172,3 @@ def build_argparser() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
     main()
-

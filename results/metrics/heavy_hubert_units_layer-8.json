@@ -1,0 +1,52 @@
+{
+  "audio_seconds": 1599.87,
+  "device": "cuda:1",
+  "elapsed_seconds": 56.172854371368885,
+  "layer": -8,
+  "limit": 256,
+  "model": "facebook/hubert-base-ls960",
+  "split": "validation",
+  "subset": "clean",
+  "unit_results": [
+    {
+      "bitrate": 281.6054479808653,
+      "codebook_size": 50,
+      "dedup_bitrate": 148.085653918358,
+      "dedup_token_rate": 26.23838186852682,
+      "mean_negative_inertia": 45.172286623167324,
+      "token_rate": 49.89592904423485
+    },
+    {
+      "bitrate": 331.5013770251001,
+      "codebook_size": 100,
+      "dedup_bitrate": 186.5829464935141,
+      "dedup_token_rate": 28.083531786957693,
+      "mean_negative_inertia": 41.89773697694017,
+      "token_rate": 49.89592904423485
+    },
+    {
+      "bitrate": 381.397306069335,
+      "codebook_size": 200,
+      "dedup_bitrate": 239.03802748387008,
+      "dedup_token_rate": 31.271915843162258,
+      "mean_negative_inertia": 38.54671396450488,
+      "token_rate": 49.89592904423485
+    },
+    {
+      "bitrate": 447.35613649341536,
+      "codebook_size": 500,
+      "dedup_bitrate": 303.1465900945145,
+      "dedup_token_rate": 33.81149718414621,
+      "mean_negative_inertia": 34.79992839557046,
+      "token_rate": 49.89592904423485
+    },
+    {
+      "bitrate": 497.25206553765025,
+      "codebook_size": 1000,
+      "dedup_bitrate": 350.46282224409384,
+      "dedup_token_rate": 35.16660728684206,
+      "mean_negative_inertia": 32.82258806911156,
+      "token_rate": 49.89592904423485
+    }
+  ]
+}

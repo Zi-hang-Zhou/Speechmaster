@@ -1,0 +1,682 @@
+{
+  "budgets": [
+    0.0,
+    10.0,
+    25.0,
+    50.0,
+    75.0,
+    100.0
+  ],
+  "complementarity": {
+    "fast_better": 53,
+    "n": 1024,
+    "strong_better": 252,
+    "tied": 719
+  },
+  "modes": {
+    "duration": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.010732897454280852,
+            "deletions": 64,
+            "insertions": 52,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.001342707339727414,
+            "substitutions": 585,
+            "wer": 0.03298978775471787
+          },
+          {
+            "cer": 0.009491605226268312,
+            "deletions": 56,
+            "insertions": 45,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.001551307877672853,
+            "substitutions": 522,
+            "wer": 0.029319026777730718
+          },
+          {
+            "cer": 0.008089801072219667,
+            "deletions": 51,
+            "insertions": 44,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0018506586623497619,
+            "substitutions": 461,
+            "wer": 0.026165937220575086
+          },
+          {
+            "cer": 0.007265839851900996,
+            "deletions": 46,
+            "insertions": 43,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.002125381684834136,
+            "substitutions": 419,
+            "wer": 0.023907007388582993
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2026
+      }
+    ],
+    "entropy": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.010882708585247884,
+            "deletions": 63,
+            "insertions": 58,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012826538086209841,
+            "substitutions": 596,
+            "wer": 0.0337427643653819
+          },
+          {
+            "cer": 0.009470203636130164,
+            "deletions": 56,
+            "insertions": 54,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014615169590067173,
+            "substitutions": 540,
+            "wer": 0.030589674808226268
+          },
+          {
+            "cer": 0.008004194711667077,
+            "deletions": 49,
+            "insertions": 44,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0017915710432137794,
+            "substitutions": 469,
+            "wer": 0.026448303449574096
+          },
+          {
+            "cer": 0.00692341440969064,
+            "deletions": 39,
+            "insertions": 42,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0021085147603732896,
+            "substitutions": 409,
+            "wer": 0.023059908701585956
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2026
+      }
+    ],
+    "oracle": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.009673518742442563,
+            "deletions": 38,
+            "insertions": 45,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012862314008737304,
+            "substitutions": 511,
+            "wer": 0.02795425667090216
+          },
+          {
+            "cer": 0.006580988967480284,
+            "deletions": 29,
+            "insertions": 27,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.00150307170487028,
+            "substitutions": 352,
+            "wer": 0.019200903571932798
+          },
+          {
+            "cer": 0.006431177836513253,
+            "deletions": 28,
+            "insertions": 27,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0018076735732679948,
+            "substitutions": 353,
+            "wer": 0.019200903571932798
+          },
+          {
+            "cer": 0.00630276829568437,
+            "deletions": 28,
+            "insertions": 30,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0020980758864878254,
+            "substitutions": 350,
+            "wer": 0.019200903571932798
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2026
+      }
+    ],
+    "peak": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.010925511765524178,
+            "deletions": 62,
+            "insertions": 58,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.001283024552007405,
+            "substitutions": 599,
+            "wer": 0.033836886441714904
+          },
+          {
+            "cer": 0.009470203636130164,
+            "deletions": 55,
+            "insertions": 52,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014631242275415846,
+            "substitutions": 539,
+            "wer": 0.030401430655560262
+          },
+          {
+            "cer": 0.007939989941252635,
+            "deletions": 46,
+            "insertions": 45,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0017787278812679535,
+            "substitutions": 460,
+            "wer": 0.025930632029742575
+          },
+          {
+            "cer": 0.006976918385036008,
+            "deletions": 40,
+            "insertions": 41,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0021078670986492366,
+            "substitutions": 406,
+            "wer": 0.02291872558708645
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2026
+      }
+    ],
+    "peak_entropy": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.010925511765524178,
+            "deletions": 62,
+            "insertions": 59,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012823745284738692,
+            "substitutions": 601,
+            "wer": 0.03397806955621441
+          },
+          {
+            "cer": 0.00945950284106109,
+            "deletions": 54,
+            "insertions": 52,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014624038942242022,
+            "substitutions": 539,
+            "wer": 0.03035436961739376
+          },
+          {
+            "cer": 0.007972092326459856,
+            "deletions": 46,
+            "insertions": 45,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.001779445181164356,
+            "substitutions": 462,
+            "wer": 0.02602475410607558
+          },
+          {
+            "cer": 0.006976918385036008,
+            "deletions": 40,
+            "insertions": 41,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.002107939212994415,
+            "substitutions": 406,
+            "wer": 0.02291872558708645
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2026
+      }
+    ],
+    "random": [
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.011332141978148977,
+            "deletions": 66,
+            "insertions": 61,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012961710417254504,
+            "substitutions": 613,
+            "wer": 0.03482516824321145
+          },
+          {
+            "cer": 0.010732897454280852,
+            "deletions": 65,
+            "insertions": 60,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014780923648641644,
+            "substitutions": 587,
+            "wer": 0.03350745917454939
+          },
+          {
+            "cer": 0.009566510791751828,
+            "deletions": 53,
+            "insertions": 53,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0017777974368675584,
+            "substitutions": 528,
+            "wer": 0.02983669819756224
+          },
+          {
+            "cer": 0.007918588351114487,
+            "deletions": 46,
+            "insertions": 48,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0020990455628577096,
+            "substitutions": 453,
+            "wer": 0.02574238787707657
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 1
+      },
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.011428449133770639,
+            "deletions": 62,
+            "insertions": 54,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012977560221553552,
+            "substitutions": 618,
+            "wer": 0.034542802014212434
+          },
+          {
+            "cer": 0.010700795069073633,
+            "deletions": 56,
+            "insertions": 49,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014775930168600504,
+            "substitutions": 581,
+            "wer": 0.03228387218222034
+          },
+          {
+            "cer": 0.00942740045585387,
+            "deletions": 57,
+            "insertions": 43,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.001792042277138146,
+            "substitutions": 509,
+            "wer": 0.02866017224339969
+          },
+          {
+            "cer": 0.008036297096874298,
+            "deletions": 45,
+            "insertions": 41,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0020960748760005337,
+            "substitutions": 452,
+            "wer": 0.02531883853357805
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 2
+      },
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.011086023691560283,
+            "deletions": 65,
+            "insertions": 60,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0013089241132777415,
+            "substitutions": 610,
+            "wer": 0.03458986305237893
+          },
+          {
+            "cer": 0.010090849750136435,
+            "deletions": 56,
+            "insertions": 50,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014974021407784858,
+            "substitutions": 562,
+            "wer": 0.03143677349522331
+          },
+          {
+            "cer": 0.008806754341847599,
+            "deletions": 45,
+            "insertions": 46,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.001798629147564291,
+            "substitutions": 503,
+            "wer": 0.02795425667090216
+          },
+          {
+            "cer": 0.007629666884249499,
+            "deletions": 41,
+            "insertions": 40,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0020970549425596324,
+            "substitutions": 445,
+            "wer": 0.024754106075580026
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 3
+      },
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.01131074038801083,
+            "deletions": 59,
+            "insertions": 58,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.001296010859226922,
+            "substitutions": 612,
+            "wer": 0.03430749682337993
+          },
+          {
+            "cer": 0.010711495864142705,
+            "deletions": 57,
+            "insertions": 60,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014747105524617577,
+            "substitutions": 583,
+            "wer": 0.032942726716551365
+          },
+          {
+            "cer": 0.009352494890370355,
+            "deletions": 55,
+            "insertions": 57,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.0017785467496382874,
+            "substitutions": 517,
+            "wer": 0.029601393006729728
+          },
+          {
+            "cer": 0.0078329819905619,
+            "deletions": 45,
+            "insertions": 49,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.002083881681499214,
+            "substitutions": 446,
+            "wer": 0.025412960609911054
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 4
+      },
+      {
+        "budgets": [
+          {
+            "cer": 0.011856480936533584,
+            "deletions": 67,
+            "insertions": 60,
+            "route_percentage": 0.0,
+            "routed_utterances": 0,
+            "rtf": 0.0011738587343000737,
+            "substitutions": 641,
+            "wer": 0.0361428773118735
+          },
+          {
+            "cer": 0.011417748338701565,
+            "deletions": 68,
+            "insertions": 60,
+            "route_percentage": 10.0,
+            "routed_utterances": 102,
+            "rtf": 0.0012913885455466158,
+            "substitutions": 619,
+            "wer": 0.03515459551037696
+          },
+          {
+            "cer": 0.010743598249349926,
+            "deletions": 70,
+            "insertions": 57,
+            "route_percentage": 25.0,
+            "routed_utterances": 256,
+            "rtf": 0.0014698555638831168,
+            "substitutions": 588,
+            "wer": 0.033648642289048895
+          },
+          {
+            "cer": 0.009363195685439429,
+            "deletions": 64,
+            "insertions": 56,
+            "route_percentage": 50.0,
+            "routed_utterances": 512,
+            "rtf": 0.001779348698563928,
+            "substitutions": 525,
+            "wer": 0.03035436961739376
+          },
+          {
+            "cer": 0.008046997891943372,
+            "deletions": 52,
+            "insertions": 53,
+            "route_percentage": 75.0,
+            "routed_utterances": 768,
+            "rtf": 0.0020833808702027334,
+            "substitutions": 459,
+            "wer": 0.0265424255259071
+          },
+          {
+            "cer": 0.0066665953280328726,
+            "deletions": 41,
+            "insertions": 43,
+            "route_percentage": 100.0,
+            "routed_utterances": 1024,
+            "rtf": 0.0023974749939275866,
+            "substitutions": 390,
+            "wer": 0.022306932090921924
+          }
+        ],
+        "seed": 5
+      }
+    ]
+  },
+  "n": 1024,
+  "predictions": "results/predictions/test_clean_speechmaster_router.jsonl"
+}

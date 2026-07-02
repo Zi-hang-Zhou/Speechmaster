@@ -1,0 +1,83 @@
+{
+  "audio_seconds": 7671.215437499996,
+  "budgets": [
+    {
+      "cer": 0.011856480936533584,
+      "deletions": 67,
+      "insertions": 60,
+      "route_percentage": 0.0,
+      "routed_audio_seconds": 0,
+      "routed_utterances": 0,
+      "rtf": 0.0011738587343000737,
+      "substitutions": 641,
+      "wer": 0.0361428773118735
+    },
+    {
+      "cer": 0.010925511765524178,
+      "deletions": 62,
+      "insertions": 59,
+      "route_percentage": 10.0,
+      "routed_audio_seconds": 449.8448749999999,
+      "routed_utterances": 102,
+      "rtf": 0.0012823745284738692,
+      "substitutions": 601,
+      "wer": 0.03397806955621441
+    },
+    {
+      "cer": 0.00945950284106109,
+      "deletions": 54,
+      "insertions": 52,
+      "route_percentage": 25.0,
+      "routed_audio_seconds": 1560.0849374999993,
+      "routed_utterances": 256,
+      "rtf": 0.0014624038942242022,
+      "substitutions": 539,
+      "wer": 0.03035436961739376
+    },
+    {
+      "cer": 0.007972092326459856,
+      "deletions": 46,
+      "insertions": 45,
+      "route_percentage": 50.0,
+      "routed_audio_seconds": 3817.750250000002,
+      "routed_utterances": 512,
+      "rtf": 0.001779445181164356,
+      "substitutions": 462,
+      "wer": 0.02602475410607558
+    },
+    {
+      "cer": 0.006976918385036008,
+      "deletions": 40,
+      "insertions": 41,
+      "route_percentage": 75.0,
+      "routed_audio_seconds": 6049.3903125,
+      "routed_utterances": 768,
+      "rtf": 0.002107939212994415,
+      "substitutions": 406,
+      "wer": 0.02291872558708645
+    },
+    {
+      "cer": 0.0066665953280328726,
+      "deletions": 41,
+      "insertions": 43,
+      "route_percentage": 100.0,
+      "routed_audio_seconds": 7671.215437499996,
+      "routed_utterances": 1024,
+      "rtf": 0.0023974749939275866,
+      "substitutions": 390,
+      "wer": 0.022306932090921924
+    }
+  ],
+  "fast_decode_seconds": 9.004923244006932,
+  "fast_model": "facebook/wav2vec2-base-960h",
+  "fast_rtf": 0.0011738587343000737,
+  "limit": 1024,
+  "oracle_cer": 0.006580988967480284,
+  "oracle_wer": 0.019200903571932798,
+  "split": "test",
+  "strong_decode_seconds": 9.386623940430582,
+  "strong_model": "facebook/hubert-large-ls960-ft",
+  "strong_rtf": 0.0012236162596275131,
+  "subset": "clean",
+  "system": "SpeechMaster"
+}

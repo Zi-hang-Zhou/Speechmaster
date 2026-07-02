@@ -1,10 +1,10 @@
 # SpeechMaster
 
-SpeechMaster is a reproducible course project for low-resource ASR with
-self-supervised speech representations. It uses LibriSpeech and pretrained SSL
-encoders such as Wav2Vec2 and HuBERT, but the core contribution is not a simple
-model comparison. SpeechMaster is a budget-aware framework that merges a fast
-SSL recognizer, a stronger SSL recognizer, a CTC uncertainty router, and a
+SpeechMaster is a reproducible course project for ASR with self-supervised
+speech representations. It uses LibriSpeech and pretrained SSL encoders such as
+Wav2Vec2 and HuBERT, but the core contribution is not a simple model
+comparison. SpeechMaster is a budget-aware framework that merges a fast SSL
+recognizer, a stronger SSL recognizer, a CTC uncertainty router, and a
 discrete-unit budget auditor.
 
 ## Research Question
@@ -20,8 +20,9 @@ of the strongest SSL model, while still measuring representation compression?
    entropy.
 3. A HuBERT discrete-unit budget auditor using k-means over hidden states,
    reporting token rate, bitrate, and codebook effects.
-4. Reproducible WER/CER/RTF experiments, ablations, ICASSP-style paper, tables,
-   figures, and packaging scripts.
+4. Reproducible WER/CER/RTF experiments, router ablations, layer ablations,
+   unit-codebook ablations, ICASSP-style paper, tables, figures, and packaging
+   scripts.
 
 ## Directory Layout
 
@@ -48,6 +49,10 @@ bash scripts/run_smoke_eval.sh
 # Run the main reproducible evaluation suite, including SpeechMaster routing.
 bash scripts/run_main_experiments.sh
 
+# Run the heavier paper suite used for the submitted tables.
+SSL_HEAVY_LIMIT=1024 SSL_HEAVY_UNIT_LIMIT=512 bash scripts/run_heavy_experiments.sh
+SSL_TEST_LIMIT=1024 bash scripts/run_test_clean_experiments.sh
+
 # Build the paper PDF if a LaTeX toolchain is installed.
 bash scripts/build_paper.sh
 ```
@@ -64,12 +69,19 @@ bash scripts/build_paper.sh
 
 ## Current Headline Result
 
-On a 128-utterance LibriSpeech clean validation slice:
+On 1024 LibriSpeech dev-clean utterances:
 
-- Wav2Vec2 fast branch: 2.47% WER.
-- SpeechMaster with 25% routed utterances: 1.88% WER.
-- HuBERT strong branch for all utterances: 1.58% WER.
-- Oracle SpeechMaster route: 1.19% WER, showing branch complementarity.
+- Wav2Vec2 fast branch: 2.94% WER.
+- SpeechMaster with 25% routed utterances: 2.40% WER.
+- HuBERT strong branch for all utterances: 1.82% WER.
+- Oracle SpeechMaster route: 1.45% WER.
+
+On 1024 LibriSpeech test-clean utterances:
+
+- Wav2Vec2 fast branch: 3.61% WER.
+- SpeechMaster with 25% routed utterances: 3.04% WER.
+- SpeechMaster with 50% routed utterances: 2.60% WER.
+- Oracle SpeechMaster route: 1.92% WER.
 
 ## Sources Used
 

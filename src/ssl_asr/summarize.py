@@ -60,6 +60,7 @@ def summarize(args: argparse.Namespace) -> None:
                 unit_rows.append(
                     {
                         "System": model,
+                        "Layer": row.get("layer"),
                         "K": item["codebook_size"],
                         "Tok/s": item["token_rate"],
                         "Dedup tok/s": item["dedup_token_rate"],
@@ -121,12 +122,52 @@ def summarize(args: argparse.Namespace) -> None:
         plt.savefig(out_dir / "speechmaster_budget.pdf")
         plt.close()
 
+    if args.route_ablation:
+        rows = []
+        for result in _load_jsons(args.route_ablation):
+            for mode, runs in result["modes"].items():
+                for run in runs:
+                    for item in run["budgets"]:
+                        rows.append(
+                            {
+                                "Mode": mode,
+                                "Seed": run["seed"],
+                                "Route": item["route_percentage"],
+                                "WER": 100 * item["wer"],
+                                "CER": 100 * item["cer"],
+                                "RTF": item["rtf"],
+                            }
+                        )
+        route_df = pd.DataFrame(rows)
+        route_df.to_csv(out_dir / "route_ablation_metrics.csv", index=False)
+        mean_df = (
+            route_df.groupby(["Mode", "Route"], as_index=False)[["WER", "CER", "RTF"]]
+            .mean()
+            .sort_values(["Route", "WER"])
+        )
+        mean_df.to_csv(out_dir / "route_ablation_mean.csv", index=False)
+        (out_dir / "route_ablation_mean.tex").write_text(
+            mean_df.to_latex(index=False, float_format="%.3f"),
+            encoding="utf-8",
+        )
+        plt.figure(figsize=(6.2, 3.4))
+        for mode, group in mean_df.groupby("Mode"):
+            if mode in {"peak_entropy", "peak", "entropy", "oracle", "random"}:
+                plt.plot(group["Route"], group["WER"], marker="o", label=mode)
+        plt.xlabel("Routed utterances (%)")
+        plt.ylabel("WER (%)")
+        plt.legend(fontsize=7)
+        plt.tight_layout()
+        plt.savefig(out_dir / "route_ablation_wer.pdf")
+        plt.close()
+
 
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Summarize experiment JSON files into paper assets.")
     p.add_argument("--asr", nargs="*", default=[])
     p.add_argument("--units", nargs="*", default=[])
     p.add_argument("--speechmaster", nargs="*", default=[])
+    p.add_argument("--route-ablation", nargs="*", default=[])
     p.add_argument("--output-dir", default="results/tables")
     return p
 
