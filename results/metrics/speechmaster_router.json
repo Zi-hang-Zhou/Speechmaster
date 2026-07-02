@@ -1,0 +1,72 @@
+{
+  "audio_seconds": 749.2451250000003,
+  "budgets": [
+    {
+      "cer": 0.009451035592197869,
+      "deletions": 2,
+      "insertions": 2,
+      "route_percentage": 0.0,
+      "routed_audio_seconds": 0,
+      "routed_utterances": 0,
+      "rtf": 0.002215141789279328,
+      "substitutions": 54,
+      "wer": 0.024744027303754267
+    },
+    {
+      "cer": 0.00633420470540921,
+      "deletions": 2,
+      "insertions": 1,
+      "route_percentage": 25.0,
+      "routed_audio_seconds": 208.47006249999995,
+      "routed_utterances": 32,
+      "rtf": 0.002614840393239643,
+      "substitutions": 41,
+      "wer": 0.01877133105802048
+    },
+    {
+      "cer": 0.0060325759099135335,
+      "deletions": 2,
+      "insertions": 1,
+      "route_percentage": 50.0,
+      "routed_audio_seconds": 409.0550624999999,
+      "routed_utterances": 64,
+      "rtf": 0.0030124322864591158,
+      "substitutions": 39,
+      "wer": 0.017918088737201365
+    },
+    {
+      "cer": 0.005529861250754072,
+      "deletions": 2,
+      "insertions": 1,
+      "route_percentage": 75.0,
+      "routed_audio_seconds": 599.5100625000001,
+      "routed_utterances": 96,
+      "rtf": 0.003415768197042139,
+      "substitutions": 37,
+      "wer": 0.017064846416382253
+    },
+    {
+      "cer": 0.004926603659762718,
+      "deletions": 2,
+      "insertions": 1,
+      "route_percentage": 100.0,
+      "routed_audio_seconds": 749.2451250000003,
+      "routed_utterances": 128,
+      "rtf": 0.003951811207399019,
+      "substitutions": 34,
+      "wer": 0.015784982935153583
+    }
+  ],
+  "fast_decode_seconds": 1.6596841868013144,
+  "fast_model": "facebook/wav2vec2-base-960h",
+  "fast_rtf": 0.002215141789279328,
+  "limit": 128,
+  "oracle_cer": 0.0038206314096119044,
+  "oracle_wer": 0.011945392491467578,
+  "split": "validation",
+  "strong_decode_seconds": 1.3011910952627659,
+  "strong_model": "facebook/hubert-large-ls960-ft",
+  "strong_rtf": 0.0017366694181196914,
+  "subset": "clean",
+  "system": "SpeechMaster"
+}

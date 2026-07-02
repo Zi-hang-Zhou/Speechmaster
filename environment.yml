@@ -1,0 +1,14 @@
+name: ssl-asr-icassp
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch
+  - torchaudio
+  - pytorch-cuda=12.4
+  - pip
+  - pip:
+      - -r requirements.txt
+

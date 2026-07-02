@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.cache/
+data/raw/
+data/hf_cache/
+data/features/
+outputs/
+results/checkpoints/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.fdb_latexmk
+paper/*.fls

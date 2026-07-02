@@ -1,0 +1,19 @@
+dataset:
+  name: openslr/librispeech_asr
+  subset: clean
+  split: validation
+  test_split: test
+  limit: 256
+models:
+  - id: facebook/wav2vec2-base-960h
+    family: wav2vec2
+  - id: facebook/hubert-large-ls960-ft
+    family: hubert
+ablations:
+  layers: [-1, -4, -8]
+  blends: [last4, midlast]
+units:
+  model: facebook/hubert-base-ls960
+  layer: -1
+  codebooks: [50, 100, 200, 500]
+

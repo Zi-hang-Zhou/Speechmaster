@@ -1,0 +1,44 @@
+{
+  "audio_seconds": 304.32006250000006,
+  "device": "cuda:1",
+  "elapsed_seconds": 18.195149770006537,
+  "layer": -1,
+  "limit": 64,
+  "model": "facebook/hubert-base-ls960",
+  "split": "validation",
+  "subset": "clean",
+  "unit_results": [
+    {
+      "bitrate": 281.4138283230724,
+      "codebook_size": 50,
+      "dedup_bitrate": 143.45169118748944,
+      "dedup_token_rate": 25.417318649505727,
+      "mean_negative_inertia": 76.9700903117586,
+      "token_rate": 49.86197714125403
+    },
+    {
+      "bitrate": 331.2758054643264,
+      "codebook_size": 100,
+      "dedup_bitrate": 187.05490320405616,
+      "dedup_token_rate": 28.154568350221727,
+      "mean_negative_inertia": 65.51447560511608,
+      "token_rate": 49.86197714125403
+    },
+    {
+      "bitrate": 381.1377826055804,
+      "codebook_size": 200,
+      "dedup_bitrate": 225.5831307223354,
+      "dedup_token_rate": 29.511692151417055,
+      "mean_negative_inertia": 54.51971055032457,
+      "token_rate": 49.86197714125403
+    },
+    {
+      "bitrate": 447.0517310552356,
+      "codebook_size": 500,
+      "dedup_bitrate": 298.68264461829307,
+      "dedup_token_rate": 33.313610403191866,
+      "mean_negative_inertia": 41.89715501356144,
+      "token_rate": 49.86197714125403
+    }
+  ]
+}

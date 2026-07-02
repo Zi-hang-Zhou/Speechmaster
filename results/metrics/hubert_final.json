@@ -1,0 +1,18 @@
+{
+  "audio_seconds": 749.2451250000003,
+  "blend": null,
+  "cer": 0.004926603659762718,
+  "decode_seconds": 3.4526616893708706,
+  "deletions": 2,
+  "device": "cuda:1",
+  "hits": 2308,
+  "insertions": 1,
+  "layer": null,
+  "limit": 128,
+  "model": "facebook/hubert-large-ls960-ft",
+  "rtf": 0.004608187059436482,
+  "split": "validation",
+  "subset": "clean",
+  "substitutions": 34,
+  "wer": 0.015784982935153583
+}

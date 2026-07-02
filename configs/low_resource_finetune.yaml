@@ -1,0 +1,16 @@
+model: facebook/wav2vec2-base
+processor: facebook/wav2vec2-base-960h
+dataset: openslr/librispeech_asr
+subset: clean
+train_split: train.100
+eval_split: validation
+train_limit: 1000
+eval_limit: 256
+max_steps: 1000
+batch_size: 4
+grad_accum: 8
+learning_rate: 0.0003
+freeze_feature_encoder: true
+gradient_checkpointing: true
+seed: 2026
+

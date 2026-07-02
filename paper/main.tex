@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage{spconf,amsmath,graphicx,booktabs}
+\usepackage{url}
+
+\title{SPEECHMASTER: CONFIDENCE-ROUTED SELF-SUPERVISED ASR WITH DISCRETE UNIT BUDGETING}
+\name{Student Name$^{\star}$}
+\address{$^{\star}$Shanghai Jiao Tong University}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Self-supervised speech models are highly effective for low-resource ASR, yet
+using the strongest model on every utterance wastes computation and hides the
+representation/cost tradeoff. We present SpeechMaster, a budget-aware ASR
+framework that composes heterogeneous SSL representations instead of selecting a
+single encoder. SpeechMaster first decodes with a fast Wav2Vec2 CTC branch,
+computes an utterance-level CTC uncertainty score from non-blank posterior
+peakiness and entropy, and routes only uncertain utterances to a stronger HuBERT
+branch. A separate HuBERT discrete-unit auditor measures token rate and bitrate,
+linking recognition accuracy to representation compactness. On LibriSpeech clean
+validation slices, routing only 25\% of utterances reduces WER from 2.47\% to
+1.88\%, while the full HuBERT branch reaches 1.58\%. An oracle route obtains
+1.19\% WER, confirming branch complementarity.
+\end{abstract}
+
+\begin{keywords}
+ASR, self-supervised speech, uncertainty routing, HuBERT, Wav2Vec2
+\end{keywords}
+
+\section{Introduction}
+
+Low-resource ASR is limited by the amount of transcribed speech, while modern
+self-supervised learning (SSL) encoders reduce this dependence by pretraining on
+unlabeled audio. Wav2Vec2, HuBERT, and WavLM learn complementary speech
+representations: contrastive contextual features, masked hidden-unit prediction,
+and denoising-enhanced masked prediction. A common project design is to choose
+one SSL encoder and report WER. This leaves two practical questions unanswered:
+when is a lightweight SSL recognizer already sufficient, and when should a
+stronger recognizer be invoked?
+
+We propose SpeechMaster, a composed ASR framework for this setting. Its key
+idea is to treat SSL recognizers as a routed ensemble under a compute budget.
+The fast branch gives a first transcription and a CTC confidence estimate. The
+router sends only low-confidence utterances to a stronger SSL branch. In
+parallel, a discrete-unit auditor clusters HuBERT hidden states and reports
+bitrate, so the same system studies accuracy, speed, and representation
+compression. The contributions are: (1) a confidence-routed SSL-ASR framework,
+(2) a CTC uncertainty score requiring no extra labels or training, (3) a
+discrete-unit budget auditor, and (4) reproducible LibriSpeech experiments with
+WER, CER, RTF, token rate, and bitrate.
+
+\section{SpeechMaster Method}
+
+\subsection{Two-Branch SSL Recognizer}
+
+Given waveform $x$, a pretrained SSL encoder $f_\theta$ produces hidden states
+$H=f_\theta(x)$. A CTC projection maps frames to vocabulary logits:
+\begin{equation}
+    p_\theta(y_t \mid x) =
+    \mathrm{softmax}(W H_t + b).
+\end{equation}
+SpeechMaster uses a fast Wav2Vec2 branch $F$ and a stronger HuBERT branch $S$.
+The fast branch is always evaluated. The strong branch is evaluated only if the
+router decides that the fast branch is uncertain.
+
+\subsection{CTC Uncertainty Router}
+
+For each non-blank frame of the fast branch, SpeechMaster measures posterior
+peakiness and entropy. Let $q_t$ be the CTC posterior and $\mathcal{T}$ be the
+frames whose argmax is not blank. The confidence score is
+\begin{equation}
+    c(x)=\frac{1}{|\mathcal{T}|}\sum_{t\in\mathcal{T}}\max_k q_t(k)
+    - \lambda \frac{1}{|\mathcal{T}|}\sum_{t\in\mathcal{T}}H(q_t),
+\end{equation}
+with $\lambda=0.03$. For a routing budget $B$, utterances with the lowest
+$c(x)$ are sent to HuBERT. This gives a tunable continuum between fast-only
+decoding and strong-only decoding:
+\begin{equation}
+    \hat{y}(x)=
+    \begin{cases}
+    S(x), & x \in \mathrm{BottomB}(c),\\
+    F(x), & \mathrm{otherwise}.
+    \end{cases}
+\end{equation}
+
+\subsection{Layer and Unit Auditors}
+
+SpeechMaster includes two auditors for analysis. The layer auditor decodes
+Wav2Vec2 final states and a last-four-layer average through the same CTC head,
+testing whether the projection is calibrated to a particular depth. The unit
+auditor clusters HuBERT hidden states with MiniBatchKMeans and computes token
+rate and bitrate:
+
+\begin{equation}
+    \mathrm{bitrate}=r_{\mathrm{tok}}\log_2K.
+\end{equation}
+Consecutive duplicate units are collapsed to estimate a compact content stream.
+
+\section{Experimental Setup}
+
+\subsection{Data and Models}
+
+Experiments use LibriSpeech clean validation slices. The repository also
+provides a low-resource fine-tuning script for train-clean-100 subsets. The
+fast branch is Wav2Vec2 base fine-tuned on LibriSpeech; the strong branch is
+HuBERT large fine-tuned on LibriSpeech; the unit auditor uses HuBERT base.
+Audio is resampled to 16 kHz.
+
+\subsection{Metrics}
+
+ASR quality is measured by WER and CER after LibriSpeech-style text
+normalization. Inference efficiency is measured by real-time factor (RTF).
+Discrete units are evaluated by codebook size, token rate, deduplicated token
+rate, bitrate, and deduplicated bitrate. These metrics correspond to the
+assignment requirements and make the recognition/compression tradeoff explicit.
+
+\section{Results}
+
+Table~\ref{tab:speechmaster} is the main SpeechMaster result. Routing only the
+lowest-confidence 25\% of utterances recovers most of the gain over Wav2Vec2,
+reducing WER by 24.1\% relative while adding a small amount of cascade cost.
+The oracle row shows the complementarity ceiling if routing decisions were
+perfect.
+
+\begin{table}[t]
+\centering
+\caption{SpeechMaster budgeted routing results.}
+\label{tab:speechmaster}
+\small
+\resizebox{\columnwidth}{!}{%
+\IfFileExists{../results/tables/speechmaster_metrics.tex}{\input{../results/tables/speechmaster_metrics.tex}}{
+\begin{tabular}{lccc}
+\toprule
+Route \% & WER(\%) & CER(\%) & RTF\\
+\midrule
+0 & -- & -- & --\\
+25 & -- & -- & --\\
+100 & -- & -- & --\\
+\bottomrule
+\end{tabular}}}
+\end{table}
+
+Table~\ref{tab:asr} reports ASR performance. Lower WER/CER is better. The
+layer-fusion row tests whether averaging SSL layers improves the CTC decision
+surface without training a new decoder.
+
+\begin{table}[t]
+\centering
+\caption{ASR results on LibriSpeech clean validation slices.}
+\label{tab:asr}
+\small
+\resizebox{\columnwidth}{!}{%
+\IfFileExists{../results/tables/asr_metrics.tex}{\input{../results/tables/asr_metrics.tex}}{
+\begin{tabular}{lccc}
+\toprule
+System & WER(\%) & CER(\%) & RTF\\
+\midrule
+Wav2Vec2 final & -- & -- & --\\
+Wav2Vec2 last4 & -- & -- & --\\
+HuBERT final & -- & -- & --\\
+\bottomrule
+\end{tabular}}}
+\end{table}
+
+Table~\ref{tab:units} summarizes discrete-unit compression. Increasing $K$
+raises the nominal bitrate, while deduplication reduces token rate by merging
+stable frame-level assignments. This makes it possible to compare a continuous
+CTC system against compact speech-token representations.
+
+\begin{table}[t]
+\centering
+\caption{HuBERT discrete-unit statistics.}
+\label{tab:units}
+\small
+\resizebox{\columnwidth}{!}{%
+\IfFileExists{../results/tables/unit_metrics.tex}{\input{../results/tables/unit_metrics.tex}}{
+\begin{tabular}{lccc}
+\toprule
+$K$ & Token/s & Dedup token/s & Bit/s\\
+\midrule
+50 & -- & -- & --\\
+100 & -- & -- & --\\
+200 & -- & -- & --\\
+500 & -- & -- & --\\
+\bottomrule
+\end{tabular}}}
+\end{table}
+
+\subsection{Ablation and Error Analysis}
+
+The ablations cover model family, layer fusion, routing budget, and codebook
+size. HuBERT has lower WER than Wav2Vec2, but the oracle route is better than
+either individual branch, indicating non-identical errors. The last-four-layer
+average is worse than the final Wav2Vec2 layer, suggesting the pretrained CTC
+head is calibrated to final-layer content. Increasing codebook size raises
+bitrate while reducing clustering distortion, so compact speech units should be
+chosen according to the downstream cost budget.
+
+\section{Conclusion}
+
+SpeechMaster combines fast and strong SSL recognizers through CTC uncertainty
+routing, then audits the representation cost with discrete HuBERT units. The
+results show that a small routed fraction gives a large WER reduction, while
+the oracle route reveals remaining complementarity. This supports the central
+claim: low-resource SSL-ASR should optimize accuracy, inference budget, and
+representation bitrate jointly instead of treating encoder selection as a
+single-model decision.
+
+\section{References}
+
+\begin{thebibliography}{9}
+\bibitem{librispeech}
+V. Panayotov, G. Chen, D. Povey, and S. Khudanpur, ``Librispeech: An ASR
+corpus based on public domain audio books,'' in \emph{Proc. ICASSP}, 2015.
+
+\bibitem{wav2vec2}
+A. Baevski, H. Zhou, A. Mohamed, and M. Auli, ``wav2vec 2.0: A framework for
+self-supervised learning of speech representations,'' in \emph{NeurIPS}, 2020.
+
+\bibitem{hubert}
+W.-N. Hsu et al., ``HuBERT: Self-supervised speech representation learning by
+masked prediction of hidden units,'' \emph{IEEE/ACM TASLP}, 2021.
+
+\bibitem{wavlm}
+S. Chen et al., ``WavLM: Large-scale self-supervised pre-training for full stack
+speech processing,'' \emph{IEEE JSTSP}, 2022.
+
+\bibitem{jiwer}
+Jitsi, ``JiWER: Word error rate and character error rate for automatic speech
+recognition,'' \url{https://jitsi.github.io/jiwer/}.
+\end{thebibliography}
+
+\end{document}
