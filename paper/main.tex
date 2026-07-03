@@ -69,6 +69,9 @@ branch outputs without training a separate gate. Discrete speech units are also
 widely used in speech generation and unit-based recognition. Our unit auditor
 is not a new tokenizer; it reports the information rate induced by layer and
 codebook choices, making routed ASR comparable with unit-based SSL systems.
+Open-source SSL speech toolkits make these systems easier to reproduce; our
+code follows the same reproducibility spirit but focuses on the routing and
+representation-budget layer.
 
 \section{SpeechMaster}
 
@@ -123,8 +126,8 @@ while the unit auditor quantifies discrete SSL representation cost.}
 \subsection{Two-Branch SSL-ASR}
 
 Given waveform $x$, a pretrained SSL encoder $f_\theta$ produces contextual
-hidden states $H=f_\theta(x)$. A CTC projection maps each frame to token
-posteriors:
+hidden states $H=f_\theta(x)$. A CTC projection~\cite{ctc} maps each frame to
+token posteriors:
 \begin{equation}
     p_\theta(y_t \mid x)=\mathrm{softmax}(W H_t+b).
 \end{equation}
@@ -156,7 +159,8 @@ duration, random, and oracle routers.
 \subsection{Discrete Unit Auditor}
 
 To connect ASR accuracy with representation compression, SpeechMaster extracts
-HuBERT hidden states from several layers and trains MiniBatchKMeans codebooks.
+HuBERT hidden states from several layers and trains MiniBatchKMeans
+codebooks~\cite{minibatchkmeans}.
 For codebook size $K$ and token rate $r_{\mathrm{tok}}$, the nominal bitrate is
 \begin{equation}
     \mathrm{bitrate}=r_{\mathrm{tok}}\log_2K.
@@ -312,6 +316,60 @@ $-1$ & 1000 & 49.90 & 34.50 & 343.85\\
 \end{tabular}
 \end{table}
 
+\section{Discussion}
+
+\subsection{Why SpeechMaster is More Than Model Reuse}
+
+The assignment encourages using pretrained SSL models, but the system should
+not stop at reproducing a public checkpoint. SpeechMaster adds a decision layer
+around SSL-ASR: it asks when a representation is sufficient and when the system
+should pay for a stronger representation. This changes the downstream task from
+``choose one recognizer'' to ``allocate recognition compute under a budget.''
+The fast and strong branches are existing SSL recognizers, but the routing
+policy, the branch-complementarity analysis, and the unit-bitrate auditor are
+new system components built for this project.
+
+The results also show why the composition is meaningful. If HuBERT simply
+dominated Wav2Vec2 on every utterance, oracle routing would equal full HuBERT.
+Instead, some utterances are better recognized by the fast branch, many by the
+strong branch, and most are tied. This structure creates an exploitable
+selection problem. The current CTC risk score is deliberately simple and
+label-free; it is not an oracle, but it consistently moves the system along a
+WER/RTF frontier and provides a measurable target for future learned routers.
+
+\subsection{Deployment Interpretation}
+
+SpeechMaster is useful when recognition is run repeatedly over large audio
+collections. A user can select a routing budget before inference. At $B=0$,
+the system behaves like a fast Wav2Vec2 recognizer. At $B=100$, it behaves like
+HuBERT large. Intermediate budgets trade a small increase in RTF for a smooth
+WER reduction. This is different from ensembling, which evaluates every branch
+for every utterance. The saved-branch design also makes offline development
+cheap: once branch outputs are cached, new routing scores can be tested without
+rerunning neural inference.
+
+The discrete-unit auditor plays a complementary role. If the downstream system
+later switches to a unit-based ASR or TTS component, the auditor estimates how
+much information rate the selected representation will require. For example,
+layer $-4$ with $K=100$ gives a compact stream near 180 bit/s after
+deduplication, while $K=1000$ gives higher bitrate and more acoustic detail.
+Thus SpeechMaster connects recognizer accuracy, inference cost, and
+representation compression in one experimental framework.
+
+\subsection{Limitations}
+
+The strongest remaining limitation is the router. Peakiness and entropy are
+reasonable CTC confidence features, but they do not explicitly model lexical
+context, speaker condition, or acoustic domain shift. The oracle gap on both
+dev-clean and test-clean suggests that a small supervised or self-training
+router could improve the budget frontier. A second limitation is that the
+current experiments use clean LibriSpeech slices. Noisy or accented speech
+would likely increase both branch disagreement and routing value. Finally, the
+unit auditor reports compression statistics rather than directly training a
+unit-based recognizer. This is intentional for scope control, but it leaves a
+clear next step: couple the selected HuBERT codebooks to a text or unit decoder
+and evaluate whether bitrate reductions preserve WER.
+
 \section{Conclusion}
 
 SpeechMaster combines fast and strong self-supervised ASR models through
@@ -321,8 +379,6 @@ a smooth WER/RTF tradeoff, while oracle routing reveals substantial
 complementarity. The results support a system-level view of low-resource
 SSL-ASR: encoder choice, routing budget, and representation bitrate should be
 optimized jointly rather than treated as isolated design choices.
-
-\section{References}
 
 \begin{thebibliography}{9}
 \bibitem{librispeech}
@@ -344,6 +400,15 @@ speech processing,'' \emph{IEEE JSTSP}, 2022.
 \bibitem{jiwer}
 Jitsi, ``JiWER: Word error rate and character error rate for automatic speech
 recognition,'' \url{https://jitsi.github.io/jiwer/}.
+
+\bibitem{ctc}
+A. Graves, S. Fernandez, F. Gomez, and J. Schmidhuber, ``Connectionist temporal
+classification: Labelling unsegmented sequence data with recurrent neural
+networks,'' in \emph{Proc. ICML}, 2006.
+
+\bibitem{minibatchkmeans}
+D. Sculley, ``Web-scale k-means clustering,'' in \emph{Proc. WWW}, 2010.
+
 \end{thebibliography}
 
 \end{document}
