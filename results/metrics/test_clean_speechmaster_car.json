@@ -1,0 +1,337 @@
+{
+  "alpha": 10.0,
+  "budgets": [
+    {
+      "cer": 0.011856480936533584,
+      "deletions": 67,
+      "insertions": 60,
+      "mean_predicted_gain": 0.0,
+      "route_percentage": 0.0,
+      "routed_audio_seconds": 0,
+      "routed_utterances": 0,
+      "rtf": 0.0011738587343000737,
+      "substitutions": 641,
+      "wer": 0.0361428773118735
+    },
+    {
+      "cer": 0.010048046569860141,
+      "deletions": 61,
+      "insertions": 52,
+      "mean_predicted_gain": 0.879049711982815,
+      "route_percentage": 10.0,
+      "routed_audio_seconds": 1321.4650624999995,
+      "routed_utterances": 102,
+      "rtf": 0.0013161776818260452,
+      "substitutions": 568,
+      "wer": 0.03204856699138783
+    },
+    {
+      "cer": 0.008464328899637243,
+      "deletions": 51,
+      "insertions": 43,
+      "mean_predicted_gain": 0.6585714137566308,
+      "route_percentage": 25.0,
+      "routed_audio_seconds": 2794.935124999998,
+      "routed_utterances": 256,
+      "rtf": 0.0015113882863042375,
+      "substitutions": 496,
+      "wer": 0.02776601251823615
+    },
+    {
+      "cer": 0.00730864303217729,
+      "deletions": 42,
+      "insertions": 39,
+      "mean_predicted_gain": 0.479649546919542,
+      "route_percentage": 50.0,
+      "routed_audio_seconds": 4720.3501875,
+      "routed_utterances": 512,
+      "rtf": 0.0018144782373959404,
+      "substitutions": 430,
+      "wer": 0.024048190503082496
+    },
+    {
+      "cer": 0.0069448159998287875,
+      "deletions": 42,
+      "insertions": 42,
+      "mean_predicted_gain": 0.36902250672530895,
+      "route_percentage": 75.0,
+      "routed_audio_seconds": 6321.060375,
+      "routed_utterances": 768,
+      "rtf": 0.002117806305842918,
+      "substitutions": 408,
+      "wer": 0.02315403077791896
+    },
+    {
+      "cer": 0.0066665953280328726,
+      "deletions": 41,
+      "insertions": 43,
+      "mean_predicted_gain": 0.27154969803293094,
+      "route_percentage": 100.0,
+      "routed_audio_seconds": 7671.215437499996,
+      "routed_utterances": 1024,
+      "rtf": 0.0023974749939275866,
+      "substitutions": 390,
+      "wer": 0.022306932090921924
+    }
+  ],
+  "complementarity": {
+    "fast_better": 53,
+    "n": 1024,
+    "positive_gain_edit_count": 360.0,
+    "strong_better": 252,
+    "tied": 719
+  },
+  "feature_ablations": {
+    "ctc_duration": [
+      {
+        "cer": 0.01016575531561995,
+        "deletions": 64,
+        "insertions": 49,
+        "mean_predicted_gain": 0.8335320702059522,
+        "route_percentage": 10,
+        "routed_audio_seconds": 1296.6001249999997,
+        "routed_utterances": 102,
+        "rtf": 0.0013151118943545005,
+        "substitutions": 577,
+        "wer": 0.03247211633488635
+      },
+      {
+        "cer": 0.008517832874982612,
+        "deletions": 51,
+        "insertions": 43,
+        "mean_predicted_gain": 0.629100983508214,
+        "route_percentage": 25,
+        "routed_audio_seconds": 2798.1499999999983,
+        "routed_utterances": 256,
+        "rtf": 0.00151164232869474,
+        "substitutions": 496,
+        "wer": 0.02776601251823615
+      },
+      {
+        "cer": 0.007479855753282469,
+        "deletions": 43,
+        "insertions": 41,
+        "mean_predicted_gain": 0.46364770916094256,
+        "route_percentage": 50,
+        "routed_audio_seconds": 4731.735249999999,
+        "routed_utterances": 512,
+        "rtf": 0.0018161250608371338,
+        "substitutions": 435,
+        "wer": 0.024424678808414514
+      },
+      {
+        "cer": 0.006912713614621566,
+        "deletions": 41,
+        "insertions": 42,
+        "mean_predicted_gain": 0.35963193963331214,
+        "route_percentage": 75,
+        "routed_audio_seconds": 6313.590250000001,
+        "routed_utterances": 768,
+        "rtf": 0.0021181953499142,
+        "substitutions": 407,
+        "wer": 0.023059908701585956
+      }
+    ],
+    "ctc_only": [
+      {
+        "cer": 0.010807803019764368,
+        "deletions": 62,
+        "insertions": 58,
+        "mean_predicted_gain": 0.6839335905337731,
+        "route_percentage": 10,
+        "routed_audio_seconds": 486.58,
+        "routed_utterances": 102,
+        "rtf": 0.0012833652265749767,
+        "substitutions": 594,
+        "wer": 0.0336015812508824
+      },
+      {
+        "cer": 0.009352494890370355,
+        "deletions": 56,
+        "insertions": 52,
+        "mean_predicted_gain": 0.5110981651545632,
+        "route_percentage": 25,
+        "routed_audio_seconds": 1507.2750624999992,
+        "routed_utterances": 256,
+        "rtf": 0.001461905808587468,
+        "substitutions": 536,
+        "wer": 0.030307308579227258
+      },
+      {
+        "cer": 0.007972092326459856,
+        "deletions": 50,
+        "insertions": 44,
+        "mean_predicted_gain": 0.3878433025447712,
+        "route_percentage": 50,
+        "routed_audio_seconds": 3767.730250000003,
+        "routed_utterances": 512,
+        "rtf": 0.0017915484513539425,
+        "substitutions": 466,
+        "wer": 0.026354181373241095
+      },
+      {
+        "cer": 0.006912713614621566,
+        "deletions": 41,
+        "insertions": 42,
+        "mean_predicted_gain": 0.31517890723396774,
+        "route_percentage": 75,
+        "routed_audio_seconds": 6051.200375,
+        "routed_utterances": 768,
+        "rtf": 0.0021085393006591772,
+        "substitutions": 411,
+        "wer": 0.023248152854251965
+      }
+    ],
+    "duration_only": [
+      {
+        "cer": 0.010711495864142705,
+        "deletions": 64,
+        "insertions": 52,
+        "mean_predicted_gain": 0.5031243996495312,
+        "route_percentage": 10,
+        "routed_audio_seconds": 1914.7299374999996,
+        "routed_utterances": 102,
+        "rtf": 0.0013420545963615633,
+        "substitutions": 585,
+        "wer": 0.03298978775471787
+      },
+      {
+        "cer": 0.00942740045585387,
+        "deletions": 57,
+        "insertions": 46,
+        "mean_predicted_gain": 0.40570484610791036,
+        "route_percentage": 25,
+        "routed_audio_seconds": 3727.4051249999998,
+        "routed_utterances": 256,
+        "rtf": 0.0015507457070419106,
+        "substitutions": 523,
+        "wer": 0.02946020989223022
+      },
+      {
+        "cer": 0.008143305047565033,
+        "deletions": 50,
+        "insertions": 44,
+        "mean_predicted_gain": 0.3244336224871597,
+        "route_percentage": 50,
+        "routed_audio_seconds": 5669.355187499997,
+        "routed_utterances": 512,
+        "rtf": 0.00184997431026625,
+        "substitutions": 464,
+        "wer": 0.02626005929690809
+      },
+      {
+        "cer": 0.007169532696279334,
+        "deletions": 46,
+        "insertions": 46,
+        "mean_predicted_gain": 0.2741340533686252,
+        "route_percentage": 75,
+        "routed_audio_seconds": 6927.330374999999,
+        "routed_utterances": 768,
+        "rtf": 0.002123929441277983,
+        "substitutions": 417,
+        "wer": 0.023954068426749495
+      }
+    ],
+    "full": [
+      {
+        "cer": 0.010048046569860141,
+        "deletions": 61,
+        "insertions": 52,
+        "mean_predicted_gain": 0.879049711982815,
+        "route_percentage": 10,
+        "routed_audio_seconds": 1321.4650624999995,
+        "routed_utterances": 102,
+        "rtf": 0.0013161776818260452,
+        "substitutions": 568,
+        "wer": 0.03204856699138783
+      },
+      {
+        "cer": 0.008464328899637243,
+        "deletions": 51,
+        "insertions": 43,
+        "mean_predicted_gain": 0.6585714137566308,
+        "route_percentage": 25,
+        "routed_audio_seconds": 2794.935124999998,
+        "routed_utterances": 256,
+        "rtf": 0.0015113882863042375,
+        "substitutions": 496,
+        "wer": 0.02776601251823615
+      },
+      {
+        "cer": 0.00730864303217729,
+        "deletions": 42,
+        "insertions": 39,
+        "mean_predicted_gain": 0.479649546919542,
+        "route_percentage": 50,
+        "routed_audio_seconds": 4720.3501875,
+        "routed_utterances": 512,
+        "rtf": 0.0018144782373959404,
+        "substitutions": 430,
+        "wer": 0.024048190503082496
+      },
+      {
+        "cer": 0.0069448159998287875,
+        "deletions": 42,
+        "insertions": 42,
+        "mean_predicted_gain": 0.36902250672530895,
+        "route_percentage": 75,
+        "routed_audio_seconds": 6321.060375,
+        "routed_utterances": 768,
+        "rtf": 0.002117806305842918,
+        "substitutions": 408,
+        "wer": 0.02315403077791896
+      }
+    ]
+  },
+  "feature_group": "full",
+  "model": {
+    "feature_names": [
+      "fast_confidence",
+      "fast_entropy",
+      "fast_peak",
+      "confidence_risk",
+      "peak_risk",
+      "duration",
+      "log_duration",
+      "fast_word_count",
+      "fast_char_count",
+      "fast_word_rate",
+      "fast_char_rate",
+      "entropy_duration",
+      "peak_risk_duration",
+      "confidence_risk_duration"
+    ],
+    "intercept": 0.22265624999999706,
+    "standardized_coefficients": {
+      "confidence_risk": -0.04116091413830732,
+      "confidence_risk_duration": 0.11197466249411875,
+      "duration": -0.08285930061830324,
+      "entropy_duration": 0.27852018628313896,
+      "fast_char_count": -0.11304786172333788,
+      "fast_char_rate": 0.06960232096496732,
+      "fast_confidence": 0.04116091413831277,
+      "fast_entropy": 0.21414278361428096,
+      "fast_peak": 0.058037953460643714,
+      "fast_word_count": -0.1890679866473807,
+      "fast_word_rate": 0.03154196775183843,
+      "log_duration": 0.015681605224982652,
+      "peak_risk": -0.05803795346064331,
+      "peak_risk_duration": 0.09976177289542695
+    }
+  },
+  "n": 1024,
+  "oracle_cer": 0.006580988967480284,
+  "oracle_wer": 0.019200903571932798,
+  "predictions": "results/predictions/test_clean_speechmaster_router.jsonl",
+  "router": "complementarity_aware_gain_regression",
+  "system": "SpeechMaster-CAR",
+  "train_n": 1024,
+  "train_predictions": "results/predictions/heavy_speechmaster_router.jsonl",
+  "train_target": {
+    "mean_gain": 0.22265625,
+    "negative_count": 67,
+    "positive_count": 222,
+    "sum_gain": 228.0,
+    "tied_count": 735
+  }
+}

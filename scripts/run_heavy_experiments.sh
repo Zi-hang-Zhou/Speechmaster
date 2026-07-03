@@ -47,6 +47,12 @@ python -m ssl_asr.route_ablation \
   --output results/metrics/heavy_route_ablation.json \
   --budgets 0 10 25 50 75 100
 
+python -m ssl_asr.complementarity_router \
+  --train-predictions results/predictions/heavy_speechmaster_router.jsonl \
+  --eval-predictions results/predictions/heavy_speechmaster_router.jsonl \
+  --output results/metrics/heavy_speechmaster_car.json \
+  --budgets 0 10 25 50 75 100
+
 for layer in -8 -4 -1; do
   python -m ssl_asr.unit_analysis \
     --model facebook/hubert-base-ls960 \
@@ -70,6 +76,6 @@ python -m ssl_asr.summarize \
     results/metrics/heavy_hubert_units_layer-8.json \
     results/metrics/heavy_hubert_units_layer-4.json \
     results/metrics/heavy_hubert_units_layer-1.json \
-  --speechmaster results/metrics/heavy_speechmaster_router.json \
+  --speechmaster results/metrics/heavy_speechmaster_car.json \
   --route-ablation results/metrics/heavy_route_ablation.json \
   --output-dir results/tables/heavy

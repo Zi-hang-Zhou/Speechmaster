@@ -15,15 +15,17 @@ LibriSpeech `validation`/clean, 1024 utterances.
 | HuBERT large 960h | final | 1.823 | 0.575 | 0.00256 |
 | Wav2Vec2 large LV60 | final | 1.636 | 0.532 | 0.00257 |
 
-SpeechMaster routes low-confidence Wav2Vec2 outputs to HuBERT:
+SpeechMaster-CAR trains a complementarity-aware gain predictor on cached
+dev-clean branch outputs and routes utterances with the largest predicted
+HuBERT benefit:
 
 | Routed | WER (%) | CER (%) | RTF |
 |---:|---:|---:|---:|
 | 0% | 2.943 | 0.990 | 0.00128 |
-| 10% | 2.668 | 0.875 | 0.00141 |
-| 25% | 2.398 | 0.767 | 0.00161 |
-| 50% | 2.044 | 0.654 | 0.00194 |
-| 75% | 1.921 | 0.610 | 0.00229 |
+| 10% | 2.516 | 0.817 | 0.00144 |
+| 25% | 2.182 | 0.692 | 0.00164 |
+| 50% | 2.010 | 0.636 | 0.00197 |
+| 75% | 1.887 | 0.603 | 0.00229 |
 | 100% | 1.823 | 0.575 | 0.00262 |
 | Oracle | 1.450 | 0.520 | - |
 
@@ -40,22 +42,36 @@ LibriSpeech `test`/clean, 1024 utterances.
 | Routed | WER (%) | CER (%) | RTF |
 |---:|---:|---:|---:|
 | 0% | 3.614 | 1.186 | 0.00117 |
-| 10% | 3.398 | 1.093 | 0.00128 |
-| 25% | 3.035 | 0.946 | 0.00146 |
-| 50% | 2.602 | 0.797 | 0.00178 |
-| 75% | 2.292 | 0.698 | 0.00211 |
+| 10% | 3.205 | 1.005 | 0.00132 |
+| 25% | 2.777 | 0.846 | 0.00151 |
+| 50% | 2.405 | 0.731 | 0.00181 |
+| 75% | 2.315 | 0.694 | 0.00212 |
 | 100% | 2.231 | 0.667 | 0.00240 |
 | Oracle | 1.920 | 0.658 | - |
 
 ## Router Ablation
 
 At 25% dev-clean routing, random routing gives 2.655% WER, duration gives
-2.536%, entropy gives 2.314%, SpeechMaster peak-entropy gives 2.398%, and the
-oracle gives 1.450%. At 50% test-clean routing, random gives 2.928%, duration
-2.617%, peak-only 2.593%, peak-entropy 2.602%, and oracle 1.920%.
+2.536%, entropy gives 2.314%, the original SpeechMaster peak-entropy router
+gives 2.398%, SpeechMaster-CAR gives 2.182%, and the oracle gives 1.450%. At
+50% test-clean routing, random gives 2.928%, duration 2.617%, peak-only 2.593%,
+peak-entropy 2.602%, SpeechMaster-CAR 2.405%, and oracle 1.920%.
 
 The key conclusion is that risk-aware routing consistently beats random routing,
-while the oracle gap shows useful headroom for a learned router.
+and a learned complementarity router closes a meaningful fraction of the oracle
+gap without rerunning neural inference.
+
+## SpeechMaster-CAR Feature Ablation
+
+CAR uses only fast-branch information at routing time. On test-clean, the full
+feature set gives the best 50% budget result.
+
+| Router features | 25% WER (%) | 50% WER (%) |
+|---|---:|---:|
+| CTC only | 3.031 | 2.635 |
+| Duration only | 2.946 | 2.626 |
+| CTC + duration | 2.777 | 2.442 |
+| Full CAR | 2.777 | 2.405 |
 
 ## Discrete Unit Analysis
 

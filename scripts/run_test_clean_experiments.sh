@@ -39,11 +39,17 @@ python -m ssl_asr.route_ablation \
   --output results/metrics/test_clean_route_ablation.json \
   --budgets 0 10 25 50 75 100
 
+python -m ssl_asr.complementarity_router \
+  --train-predictions results/predictions/heavy_speechmaster_router.jsonl \
+  --eval-predictions results/predictions/test_clean_speechmaster_router.jsonl \
+  --output results/metrics/test_clean_speechmaster_car.json \
+  --budgets 0 10 25 50 75 100
+
 python -m ssl_asr.summarize \
   --asr \
     results/metrics/test_clean_wav2vec2_base_final.json \
     results/metrics/test_clean_hubert_large_final.json \
     results/metrics/test_clean_wav2vec2_large_lv60_final.json \
-  --speechmaster results/metrics/test_clean_speechmaster_router.json \
+  --speechmaster results/metrics/test_clean_speechmaster_car.json \
   --route-ablation results/metrics/test_clean_route_ablation.json \
   --output-dir results/tables/test_clean
