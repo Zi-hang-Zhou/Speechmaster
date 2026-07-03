@@ -19,3 +19,5 @@ paper/figures/*.log
 paper/figures/*.out
 paper/figures/*.fdb_latexmk
 paper/figures/*.fls
+src(1).zip
+Continuous_versus_Discrete_Self_Supervised_Speech_Representations_for_Low_Resource_End_to_End_Speech_Recognition.pdf

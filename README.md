@@ -21,7 +21,10 @@ of the strongest SSL model, while still measuring representation compression?
    outputs: fast edit count minus strong edit count.
 3. A HuBERT discrete-unit budget auditor using k-means over hidden states,
    reporting token rate, bitrate, and codebook effects.
-4. Reproducible WER/CER/RTF experiments, confidence-router baselines, CAR
+4. A companion WavLM frozen-probe contribution that trains a BiLSTM-CTC head
+   and compares continuous hidden states with discrete k-means units under
+   low-resource labels.
+5. Reproducible WER/CER/RTF experiments, confidence-router baselines, CAR
    feature ablations, layer ablations, unit-codebook ablations, ICASSP-style
    paper, tables, figures, and packaging scripts.
 
@@ -29,6 +32,7 @@ of the strongest SSL model, while still measuring representation compression?
 
 ```text
 configs/          YAML experiment configs
+contrib/          teammate WavLM continuous/discrete low-resource probe
 data/             downloaded or prepared manifests
 paper/            ICASSP 2026 LaTeX paper
 results/          metrics, predictions, tables, figures
@@ -85,6 +89,13 @@ On 1024 LibriSpeech test-clean utterances:
 - SpeechMaster-CAR with 25% routed utterances: 2.78% WER.
 - SpeechMaster-CAR with 50% routed utterances: 2.40% WER.
 - Oracle SpeechMaster route: 1.92% WER.
+
+Companion WavLM low-resource probe from the integrated teammate code:
+
+- Continuous WavLM layer 10 + BiLSTM-CTC, 10h labels: 12.86% test-clean WER.
+- Discrete WavLM layer 10 k=500 units: 23.90% test-clean WER at 448 bit/s.
+- Layer selection matters: dev WER improves from 58.40% at layer 1 to 12.57%
+  at layer 10, then worsens to 15.66% at layer 12.
 
 ## Sources Used
 

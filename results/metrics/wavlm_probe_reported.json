@@ -1,0 +1,33 @@
+{
+  "system": "WavLM continuous/discrete low-resource probe",
+  "source": "Companion group report by Zihao Long",
+  "dataset": "LibriSpeech",
+  "encoder": "microsoft/wavlm-base-plus",
+  "encoder_trainable": false,
+  "downstream_head": "2-layer BiLSTM-CTC character recognizer",
+  "trainable_parameters_continuous_millions": 2.84,
+  "train_hours_main": 10,
+  "layer_sweep_dev": [
+    {"layer": 1, "wer": 0.5840, "cer": 0.2004},
+    {"layer": 4, "wer": 0.4377, "cer": 0.1349},
+    {"layer": 6, "wer": 0.3432, "cer": 0.0990},
+    {"layer": 8, "wer": 0.2075, "cer": 0.0589},
+    {"layer": 10, "wer": 0.1257, "cer": 0.0349},
+    {"layer": 12, "wer": 0.1566, "cer": 0.0430}
+  ],
+  "continuous_vs_discrete_dev": [
+    {"representation": "continuous", "layer": 10, "wer": 0.1257, "cer": 0.0349},
+    {"representation": "discrete", "layer": 10, "codebook_size": 100, "wer": 0.3627, "token_rate": 50.0, "bitrate": 332.0},
+    {"representation": "discrete", "layer": 10, "codebook_size": 500, "wer": 0.2382, "token_rate": 50.0, "bitrate": 448.0},
+    {"representation": "discrete", "layer": 10, "codebook_size": 1000, "wer": 0.2150, "token_rate": 50.0, "bitrate": 498.0}
+  ],
+  "data_scale_dev": [
+    {"train_hours": 1, "layer": 10, "representation": "continuous", "wer": 0.6995},
+    {"train_hours": 10, "layer": 10, "representation": "continuous", "wer": 0.1257}
+  ],
+  "test_clean": [
+    {"representation": "continuous", "layer": 10, "wer": 0.1286, "cer": 0.0349},
+    {"representation": "discrete", "layer": 10, "codebook_size": 500, "wer": 0.2390, "cer": 0.0703, "bitrate": 448.0}
+  ],
+  "interpretation": "Continuous WavLM features are much more accurate for low-resource ASR, while k-means units give a compact representation that remains usable at hundreds of bits per second."
+}

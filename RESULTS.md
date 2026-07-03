@@ -90,6 +90,39 @@ about 49.9 tokens/s across layers. Deduplication roughly halves the rate.
 Full CSV/LaTeX tables and plots are in `results/tables/heavy/` and
 `results/tables/test_clean/`.
 
+## Integrated WavLM Low-Resource Probe
+
+Zihao Long's companion code is integrated under `contrib/wavlm_probe/`. It
+trains a 2-layer BiLSTM-CTC character recognizer on frozen WavLM-base+
+representations, using 10h LibriSpeech labels. This complements the main
+SpeechMaster-CAR system by testing whether continuous SSL states or k-means
+discrete units are better as trainable downstream ASR inputs.
+
+Layer sweep on dev-clean, 10h labels:
+
+| WavLM layer | Dev WER (%) | Dev CER (%) |
+|---:|---:|---:|
+| 1 | 58.40 | 20.04 |
+| 4 | 43.77 | 13.49 |
+| 6 | 34.32 | 9.90 |
+| 8 | 20.75 | 5.89 |
+| 10 | 12.57 | 3.49 |
+| 12 | 15.66 | 4.30 |
+
+Continuous versus discrete units at layer 10:
+
+| Representation | K | Dev WER (%) | Test WER (%) | Bitrate |
+|---|---:|---:|---:|---:|
+| Continuous | - | 12.57 | 12.86 | - |
+| Discrete | 100 | 36.27 | - | 332 bit/s |
+| Discrete | 500 | 23.82 | 23.90 | 448 bit/s |
+| Discrete | 1000 | 21.50 | - | 498 bit/s |
+
+The takeaway is consistent with SpeechMaster's unit auditor: discrete SSL units
+are compact and usable, but continuous hidden states preserve substantially more
+ASR information. This supports treating discrete units as a compression/budget
+choice rather than as a free replacement for continuous SSL representations.
+
 ## Reproduction
 
 ```bash
@@ -103,4 +136,9 @@ PATH=/home/zihang/miniconda3/envs/torch_gpu/bin:$PATH \
   bash scripts/run_test_clean_experiments.sh
 
 bash scripts/build_paper.sh
+
+# Optional teammate companion probe.
+cd contrib/wavlm_probe
+python src/make_subset.py --root /path/to/LibriSpeech --out data
+WAVLM_PROBE_DEVICE=cuda bash src/run_all.sh
 ```

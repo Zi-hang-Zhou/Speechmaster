@@ -296,7 +296,11 @@ at about 49.9 tokens/s for all tested layers. Deduplication roughly halves the
 rate: for example, layer $-4$ with $K=100$ yields 27.14 deduplicated tokens/s
 and 180.34 bit/s, while $K=1000$ raises this to 29.74 tokens/s and
 296.36 bit/s. Layer $-8$ keeps more rapidly changing units than layer $-4$ at
-the same codebook size, suggesting a higher acoustic-detail bitrate.
+the same codebook size, suggesting a higher acoustic-detail bitrate. A companion
+WavLM frozen-probe implementation further trains a 2.84M-parameter BiLSTM-CTC
+head with 10h labels: continuous layer-10 features reach 12.86\% test-clean WER,
+while k-means units at $K=500$ reach 23.90\% WER at 448 bit/s. Thus discrete
+units are compact and usable, but continuous states preserve more ASR detail.
 
 \begin{table}[t]
 \centering
