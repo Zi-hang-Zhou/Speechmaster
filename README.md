@@ -72,6 +72,8 @@ bash scripts/build_paper.sh
 - Comparisons/ablations: model family, layer fusion, confidence routing,
   SpeechMaster-CAR feature groups, routing budget, codebook size, and unit
   deduplication.
+- Full grading checklist: `docs/assignment_compliance.md`.
+- Full resource-use record: `docs/references.md`.
 
 ## Current Headline Result
 
@@ -100,10 +102,22 @@ Companion WavLM low-resource probe from the integrated teammate code:
 ## Sources Used
 
 - LibriSpeech: https://www.openslr.org/12/
+- LJSpeech, checked but not used because this is the ASR track:
+  https://keithito.com/LJ-Speech-Dataset/
+- S3PRL, ESPnet, and SpeechBrain, checked as toolkit references:
+  https://github.com/s3prl/s3prl
+  https://github.com/espnet/espnet
+  https://github.com/speechbrain/speechbrain
 - Hugging Face Wav2Vec2 docs:
   https://huggingface.co/docs/transformers/en/model_doc/wav2vec2
+- Hugging Face HuBERT docs:
+  https://huggingface.co/docs/transformers/en/model_doc/hubert
+- Hugging Face WavLM docs:
+  https://huggingface.co/docs/transformers/en/model_doc/wavlm
 - HuBERT paper: https://arxiv.org/abs/2106.07447
 - WavLM paper: https://arxiv.org/abs/2110.13900
+- UTMOSv2, checked but not used because this is the ASR track:
+  https://github.com/sarulab-speech/UTMOSv2
 - JiWER metrics: https://jitsi.github.io/jiwer/
 - ICASSP 2026 Paper Kit:
   https://cmsworkshops.com/ICASSP2026/papers/paper_kit.php
