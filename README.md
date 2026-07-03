@@ -62,19 +62,6 @@ SSL_TEST_LIMIT=1024 bash scripts/run_test_clean_experiments.sh
 bash scripts/build_paper.sh
 ```
 
-## Assignment Mapping
-
-- Downstream task: English ASR.
-- SSL representations: Wav2Vec2, HuBERT, and WavLM-compatible CTC checkpoints.
-- Dataset: LibriSpeech clean validation/test slices by default; low-resource
-  fine-tuning configs are provided for train-clean-100 subsets.
-- Metrics: WER, CER, RTF, token rate, bitrate, and codebook size.
-- Comparisons/ablations: model family, layer fusion, confidence routing,
-  SpeechMaster-CAR feature groups, routing budget, codebook size, and unit
-  deduplication.
-- Full grading checklist: `docs/assignment_compliance.md`.
-- Full resource-use record: `docs/references.md`.
-
 ## Current Headline Result
 
 On 1024 LibriSpeech dev-clean utterances:
@@ -98,26 +85,3 @@ Companion WavLM low-resource probe from the integrated teammate code:
 - Discrete WavLM layer 10 k=500 units: 23.90% test-clean WER at 448 bit/s.
 - Layer selection matters: dev WER improves from 58.40% at layer 1 to 12.57%
   at layer 10, then worsens to 15.66% at layer 12.
-
-## Sources Used
-
-- LibriSpeech: https://www.openslr.org/12/
-- LJSpeech, checked but not used because this is the ASR track:
-  https://keithito.com/LJ-Speech-Dataset/
-- S3PRL, ESPnet, and SpeechBrain, checked as toolkit references:
-  https://github.com/s3prl/s3prl
-  https://github.com/espnet/espnet
-  https://github.com/speechbrain/speechbrain
-- Hugging Face Wav2Vec2 docs:
-  https://huggingface.co/docs/transformers/en/model_doc/wav2vec2
-- Hugging Face HuBERT docs:
-  https://huggingface.co/docs/transformers/en/model_doc/hubert
-- Hugging Face WavLM docs:
-  https://huggingface.co/docs/transformers/en/model_doc/wavlm
-- HuBERT paper: https://arxiv.org/abs/2106.07447
-- WavLM paper: https://arxiv.org/abs/2110.13900
-- UTMOSv2, checked but not used because this is the ASR track:
-  https://github.com/sarulab-speech/UTMOSv2
-- JiWER metrics: https://jitsi.github.io/jiwer/
-- ICASSP 2026 Paper Kit:
-  https://cmsworkshops.com/ICASSP2026/papers/paper_kit.php
