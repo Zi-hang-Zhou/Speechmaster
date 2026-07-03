@@ -94,37 +94,7 @@ analysis branch and does not change ASR output.
 
 \begin{figure*}[t]
 \centering
-\begin{tikzpicture}[
-    font=\small,
-    node distance=0.7cm and 0.8cm,
-    box/.style={draw, rounded corners=2pt, align=center, minimum height=0.75cm, minimum width=2.2cm},
-    widebox/.style={draw, rounded corners=2pt, align=center, minimum height=0.75cm, minimum width=2.9cm},
-    arrow/.style={-Latex, thick}
-]
-\node[box] (audio) {Waveform\\$x$};
-\node[widebox, right=of audio] (fast) {Fast SSL-ASR\\Wav2Vec2 CTC};
-\node[widebox, right=of fast] (risk) {Fast features\\CTC, length, rate};
-\node[widebox, right=of risk] (router) {CAR gain router\\top $B\%$};
-\node[box, right=of router] (mix) {Final\\transcript};
-
-\node[widebox, below=0.85cm of router] (strong) {Strong SSL-ASR\\HuBERT CTC};
-\node[widebox, below=0.85cm of fast] (unit) {HuBERT unit auditor\\layers, K-means, bitrate};
-\node[box, below=0.85cm of unit] (metrics) {token/s\\bit/s};
-
-\draw[arrow] (audio) -- (fast);
-\draw[arrow] (fast) -- node[above]{hypothesis + logits} (risk);
-\draw[arrow] (risk) -- (router);
-\draw[arrow] (router) -- node[above]{keep low gain} (mix);
-\draw[arrow] (router) -- node[right]{route high gain} (strong);
-\draw[arrow] (strong) -| node[pos=0.25, below]{replace} (mix);
-\draw[arrow] (audio) |- (unit);
-\draw[arrow] (unit) -- (metrics);
-
-\node[draw, dashed, rounded corners=2pt, fit=(fast)(risk)(router)(strong), inner sep=6pt,
-      label={[font=\small]above:SpeechMaster routed ASR core}] {};
-\node[draw, dashed, rounded corners=2pt, fit=(unit)(metrics), inner sep=6pt,
-      label={[font=\small]below:representation-cost audit}] {};
-\end{tikzpicture}
+\includegraphics[width=0.96\textwidth]{figures/speechmaster_overview.pdf}
 \caption{Overview of SpeechMaster. CAR predicts where HuBERT will improve the
 fast SSL-ASR transcript, while the unit auditor quantifies discrete SSL
 representation cost.}
