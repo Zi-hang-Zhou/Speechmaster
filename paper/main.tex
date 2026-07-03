@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{spconf,amsmath,graphicx,booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit}
 \usepackage{url}
 
 \title{SpeechMaster: Confidence-Routed Self-Supervised ASR with Discrete Unit Budgeting}
@@ -69,6 +71,54 @@ is not a new tokenizer; it reports the information rate induced by layer and
 codebook choices, making routed ASR comparable with unit-based SSL systems.
 
 \section{SpeechMaster}
+
+\subsection{System Overview}
+
+Fig.~\ref{fig:overview} shows the complete SpeechMaster pipeline. The first
+pass is a fast SSL-ASR decoder that produces both a transcript and a confidence
+trace. The router sorts utterances by CTC risk and spends the strong HuBERT
+branch only on the lowest-confidence fraction requested by the compute budget.
+The final transcript is therefore a mixture of fast and strong hypotheses. A
+separate unit auditor reads HuBERT hidden states and reports the bitrate of
+discrete unit streams; it is an analysis branch and does not change ASR output.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    node distance=0.7cm and 0.8cm,
+    box/.style={draw, rounded corners=2pt, align=center, minimum height=0.75cm, minimum width=2.2cm},
+    widebox/.style={draw, rounded corners=2pt, align=center, minimum height=0.75cm, minimum width=2.9cm},
+    arrow/.style={-Latex, thick}
+]
+\node[box] (audio) {Waveform\\$x$};
+\node[widebox, right=of audio] (fast) {Fast SSL-ASR\\Wav2Vec2 CTC};
+\node[widebox, right=of fast] (risk) {CTC risk score\\peakiness $-$ entropy};
+\node[widebox, right=of risk] (router) {Budget router\\bottom $B\%$};
+\node[box, right=of router] (mix) {Final\\transcript};
+
+\node[widebox, below=0.85cm of router] (strong) {Strong SSL-ASR\\HuBERT CTC};
+\node[widebox, below=0.85cm of fast] (unit) {HuBERT unit auditor\\layers, K-means, bitrate};
+\node[box, below=0.85cm of unit] (metrics) {token/s\\bit/s};
+
+\draw[arrow] (audio) -- (fast);
+\draw[arrow] (fast) -- node[above]{hypothesis + logits} (risk);
+\draw[arrow] (risk) -- (router);
+\draw[arrow] (router) -- node[above]{keep easy} (mix);
+\draw[arrow] (router) -- node[right]{route hard} (strong);
+\draw[arrow] (strong) -| node[pos=0.25, below]{replace} (mix);
+\draw[arrow] (audio) |- (unit);
+\draw[arrow] (unit) -- (metrics);
+
+\node[draw, dashed, rounded corners=2pt, fit=(fast)(risk)(router)(strong), inner sep=6pt,
+      label={[font=\small]above:SpeechMaster routed ASR core}] {};
+\node[draw, dashed, rounded corners=2pt, fit=(unit)(metrics), inner sep=6pt,
+      label={[font=\small]below:representation-cost audit}] {};
+\end{tikzpicture}
+\caption{Overview of SpeechMaster. The routed ASR core trades WER against RTF,
+while the unit auditor quantifies discrete SSL representation cost.}
+\label{fig:overview}
+\end{figure*}
 
 \subsection{Two-Branch SSL-ASR}
 
