@@ -48,6 +48,26 @@ budgeted inference, (3) a discrete-unit bitrate auditor over HuBERT layers and
 codebook sizes, and (4) reproducible dev/test experiments with WER, CER, RTF,
 token rate, bitrate, and routing ablations.
 
+\section{Related Work}
+
+Wav2Vec2 learns speech representations with a contrastive objective over masked
+latent frames, making it effective when downstream labels are scarce. HuBERT
+instead predicts masked cluster assignments and often produces strong
+phonetic-content representations. WavLM extends masked speech pretraining with
+denoising and full-stack speech processing objectives. These SSL encoders are
+usually evaluated as independent ASR backbones. SpeechMaster is orthogonal: it
+does not propose another encoder, but composes existing SSL recognizers under a
+budget.
+
+Confidence-based cascades have been used to avoid expensive inference on easy
+examples. Standard confidence measures, however, are often calibrated for one
+model or require extra supervision. SpeechMaster uses the posterior geometry
+already available from CTC decoding, so the router can be reproduced from saved
+branch outputs without training a separate gate. Discrete speech units are also
+widely used in speech generation and unit-based recognition. Our unit auditor
+is not a new tokenizer; it reports the information rate induced by layer and
+codebook choices, making routed ASR comparable with unit-based SSL systems.
+
 \section{SpeechMaster}
 
 \subsection{Two-Branch SSL-ASR}
@@ -104,6 +124,13 @@ reference model is Wav2Vec2-Large-LV60. HuBERT unit analysis uses HuBERT-Base.
 Exact checkpoint identifiers are listed in the released scripts. Metrics are
 WER, CER, and real-time factor (RTF) for ASR, plus token rate, deduplicated
 token rate, bitrate, and codebook size for discrete units.
+
+All decoding uses greedy CTC to isolate representation and routing effects from
+external language-model gains. We save utterance-level hypotheses, durations,
+branch confidences, and decode times as JSONL files. Every budget point is then
+deterministic after branch decoding: a new router can be evaluated by reordering
+the same utterances rather than rerunning ASR. The heavy suite therefore
+separates neural inference from cheap routing ablations.
 
 \section{Results}
 
@@ -192,6 +219,22 @@ duration gives 2.54\%, entropy gives 2.31\%, and SpeechMaster peak-entropy gives
 duration gives 2.62\%, peak-only gives 2.59\%, and peak-entropy gives 2.60\%.
 Thus the proposed score is robust, but the oracle gap indicates that a learned
 router is a promising extension.
+
+The complementarity counts support the same conclusion. On dev-clean, the fast
+branch is better for 67 utterances, the strong branch is better for 222, and
+735 are tied at utterance-level WER. On test-clean, the corresponding counts are
+53, 252, and 719. A router that always trusts the strong model cannot exploit
+the first group; a router that only uses the fast model misses the second group.
+SpeechMaster's budgeted routing is a practical middle point between these two
+extremes.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{../results/tables/heavy/route_ablation_wer.pdf}
+\caption{Router ablation on dev-clean. Risk-aware ordering improves over random
+routing, while the oracle exposes remaining headroom.}
+\label{fig:route_ablation}
+\end{figure}
 
 The unit auditor exposes a compression tradeoff. Raw HuBERT assignments appear
 at about 49.9 tokens/s for all tested layers. Deduplication roughly halves the
